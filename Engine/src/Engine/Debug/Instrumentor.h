@@ -1,5 +1,4 @@
 // Pulled from https://github.com/TheCherno/Hazel
-#ifdef EG_DEBUG
 #pragma once
 
 #include "Engine/Core/Log.h"
@@ -203,7 +202,7 @@ namespace External {
 		}
 	}
 }
-
+#ifdef EG_DEBUG
 #define EG_PROFILE 0
 #if EG_PROFILE
 // Resolve which function signature macro will be used. Note that this only
@@ -240,4 +239,9 @@ namespace External {
 #define EG_PROFILE_SCOPE(name)
 #define EG_PROFILE_FUNCTION()
 #endif
+#else
+#define EG_PROFILE_BEGIN_SESSION(name, filepath)
+#define EG_PROFILE_END_SESSION()
+#define EG_PROFILE_SCOPE(name)
+#define EG_PROFILE_FUNCTION()
 #endif

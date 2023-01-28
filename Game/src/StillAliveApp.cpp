@@ -8,7 +8,7 @@
 
 #include "Libs/OpenGL/OpenGLShader.h"
 #include "Engine/Renderer/Shader.h"
-#include "Layer2D.h"
+#include "GameLayer.h"
 
 
 class Example : public Engine::Layer
@@ -220,8 +220,8 @@ class StillAliveApp : public  Engine::Application
 public:
 	StillAliveApp()
 	{
-		//PushLayer(new Example());
-		PushLayer(new Sandbox2D);
+		//Application::Get().GetWindow().SetVSync(false);
+		PushLayer(new GameLayer());
 	}
 	~StillAliveApp()
 	{
