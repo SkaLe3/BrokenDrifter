@@ -3,6 +3,9 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/compatibility.hpp>
+
+
+
 Player::Player()
 {
 	m_OneDivideCarMass = 1.0 / m_CarMass;
@@ -12,6 +15,7 @@ Player::Player()
 void Player::LoadAssets()
 {
 	m_Car = Texture2D::Create("assets/textures/Koenigsegg.png");
+	m_Light = Texture2D::Create("assets/textures/Light.png");
 
 }
 
@@ -41,7 +45,7 @@ void Player::OnUpdate(Timestep ts)
 			EG_PROFILE_SCOPE("if (Input::IsKeyPressed(Key::A))");
 
 
-			angle = m_MoveDirection * GetSteerFactor(speed) * 180.0f * ts;
+			angle = m_MoveDirection * GetSteerFactor(speed) * (180.0f +180.0f * m_BrakePressed) * ts;
 			m_Rotation += angle;
 			float theta = glm::radians(m_Rotation);
 			m_Direction.x = cos(theta);
@@ -53,7 +57,7 @@ void Player::OnUpdate(Timestep ts)
 	{
 		AddForce(m_Direction * m_EnginePower);
 		// Braking when moving backward
-		AddForce(-m_Direction * 0.2f * m_GroundFriction * (m_MoveDirection-1));
+		AddForce(-m_Direction * 0.1f * m_GroundFriction * (m_MoveDirection-1));
 	}
 	else
 		if (Input::IsKeyPressed(Key::S))
@@ -61,7 +65,7 @@ void Player::OnUpdate(Timestep ts)
 
 			AddForce(- m_Direction * m_EnginePower );
 			//Braking when moving forward
-			AddForce(-m_Direction * 0.2f * m_GroundFriction * (m_MoveDirection + 1));
+			AddForce(-m_Direction * 0.1f * m_GroundFriction * (m_MoveDirection + 1));
 		}
 		else
 			if (speed < 0.7f)
@@ -80,8 +84,7 @@ void Player::OnUpdate(Timestep ts)
 		float airFriction =  speed * speed * 0.15f; // 0.15 is air friction factor
 		// multiply friction when break presseed;
 		AddForce((-glm::normalize(m_Velocity)) * 
-			(airFriction +  m_GroundFriction*((1-glm::abs(m_MoveDirection))*(1-m_BrakePressed)) + m_GroundFriction * m_BrakePressed ));
-		EG_TRACE("Angle between direction and velocity: ", m_MoveDirection);
+			(airFriction +  m_GroundFriction*(1-glm::abs(m_MoveDirection))*(1-m_BrakePressed) + m_GroundFriction * m_BrakePressed ));
 	}
 
 
@@ -94,18 +97,23 @@ void Player::OnUpdate(Timestep ts)
 	m_Position.x += m_Velocity.x * ts;
 	m_Position.y += m_Velocity.y * ts;
 
-	std::cout <<"Speed: "<< glm::length(m_Velocity) << std::endl;
 	
-
+	float theta = glm::radians(m_Rotation);
+	m_Direction.x = cos(theta);
+	m_Direction.y = sin(theta);
 
 }
 
 void Player::OnRender()
 {
 	Renderer2D::DrawRotatedQuad(m_Position, { 1.0f, 1.0f }, glm::radians(m_Rotation - 90.0f), m_Car);
-	Renderer2D::DrawQuad(m_Position+ glm::vec3(glm::normalize(m_Velocity), 0.1f), { 0.1f, 0.1f }, { 0.8f, 0.15f, 0.15f, 1.0f });
-	Renderer2D::DrawQuad(m_Position + glm::vec3( glm::normalize(m_Direction), 0.0f), { 0.15f, 0.15f }, { 0.15f, 0.15f, 0.8f, 1.0f });
-	Renderer2D::DrawQuad(m_Position + glm::vec3(glm::normalize(m_Force), -0.05f), { 0.2f, 0.2f }, { 0.8f, 0.8f, 0.15f, 1.0f });
+	Renderer2D::DrawRotatedQuad(m_Position + glm::vec3(glm::cos(glm::radians(m_Rotation)), glm::sin(glm::radians(m_Rotation)), 0.0f), {1.0f, 1.8f}, glm::radians(m_Rotation - 90.0f), m_Light, 1, {1.0f, 1.0f, 0.5f, 0.8f});
+#ifdef EG_DEBUG
+	Renderer2D::DrawQuad(m_Position+ glm::vec3(m_Velocity * 0.1f, 0.15f), { 0.1f, 0.1f }, { 0.8f, 0.15f, 0.15f, 1.0f });
+	Renderer2D::DrawQuad(m_Position + glm::vec3( m_Direction, 0.1f), { 0.15f, 0.15f }, { 0.15f, 0.15f, 0.8f, 1.0f });
+	Renderer2D::DrawQuad(m_Position + glm::vec3(m_Force * 0.1f, 0.05f), { 0.2f, 0.2f }, { 0.8f, 0.8f, 0.15f, 1.0f });
+#endif
+
 }
 
 void Player::OnEvent(Event& e)
@@ -113,6 +121,16 @@ void Player::OnEvent(Event& e)
 	EventDispatcher dispatcher(e);
 	dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnKeyPressed));
 	dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnKeyReleased));
+
+}
+
+void Player::OnCollision(Timestep ts, const glm::vec2& normal)
+{
+	m_Position.x += 0.02f * normal.x;
+	m_Position.y += 0.02f * normal.y;
+	m_Velocity += -(m_Velocity * normal) * normal;
+	m_Direction = (glm::normalize(m_Velocity)) * m_MoveDirection;
+
 
 }
 
@@ -127,7 +145,8 @@ void Player::RecalculateMovement(Timestep ts)
 {
 	EG_PROFILE_FUNCTION();
 	float speed = glm::length(m_Velocity);
-	float a = speed * 0.01f;
+	float a = 3*glm::exp(speed-11)+0.02f - 0.02 * m_BrakePressed;
+	//std::cout << a << std::endl;
 	m_Velocity = glm::lerp( m_Velocity, m_Direction * speed, a );
 
 }

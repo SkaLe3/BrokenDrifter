@@ -1,12 +1,6 @@
 #pragma once
 #include <Engine.h>
-/*
-* car colider:
-* 
-* left right bottom top
-* 0.29 0.29  0.05   0.05
-* 
-*/
+
 
 #include "Level.h"
 

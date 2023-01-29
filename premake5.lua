@@ -1,4 +1,4 @@
-workspace "Game"
+workspace "BrokenDrifter"
 	architecture "x64"
 	startproject "Game"
 
@@ -86,8 +86,8 @@ project "Engine"
 		optimize "on"
 
 
-project "Game"
-	location "Game"
+project "BrokenDrifter"
+	location "BrokenDrifter"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++20"
@@ -106,7 +106,7 @@ project "Game"
 	{
 		"Engine/src",
 		"Engine/vendor",
-		"StillAlive/src",
+		"BrokenDrifter/src",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}"
 	}
