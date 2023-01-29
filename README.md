@@ -5,14 +5,14 @@ Broken Drifter is a small drift racing game with my own physics logic. It was ma
 The goal was to make the game in a short time, so the development is currently frozen and delayed
 
 TODO:
-Fix backward drive
-Fix collisioin
-Improve physic
-Refactor code (change variables names, export the code to functions)
-Make optimization (remove excess math operations, add conditions that more efficient than expressions )
-Add particles
-Add Main Menu
-Add Bots
-Add map generation from file
-Add decorations
+Fix backward drive;
+Fix collisioin;
+Improve physic;
+Refactor code (change variables names, export the code to functions);
+Make optimization (remove excess math operations, add conditions that more efficient than expressions );
+Add particles;
+Add Main Menu;
+Add Bots;
+Add map generation from file;
+Add decorations;
 
