@@ -5,6 +5,7 @@ Broken Drifter is a small drift racing game with my own physics logic. It was ma
 The goal was to make the game in a short time, so the development is currently frozen and delayed
 
 TODO:
+
 Fix backward drive;
 Fix collisioin;
 Improve physic;
