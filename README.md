@@ -8,11 +8,13 @@ The goal was to make the game in a short time, so the development is currently f
 
   Start by cloning the repository with git clone --recursive https://github.com/SkaLe3/BrokenDrifter_Game.
   
-2. Controls:
+2. Generate solution:
+
+  After cloning run GenerateProjects.bat script file to generate a Visual Studio 2022 solution file
+
+3. Controls:
 
 WASD - movement. Space - handbrake. R - change camera
-
-
 
 # TODO:
 
