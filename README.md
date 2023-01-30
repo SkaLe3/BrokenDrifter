@@ -1,6 +1,6 @@
 # Broken Drifter
 
-Broken Drifter is a small drift racing game with my own physics logic. It was made from scratch in a short time to test the self made framework and practice making games without an engine. The development of the framework was accompanied by learning how to develop a game engine from video, so framework code is almost similaer to https://github.com/TheCherno/Hazel
+Broken Drifter is a small drift racing game with my own physics logic. It was made from scratch in a short time to test the self made framework, practice making games without an engine and improve my hard skills. The development of the framework was accompanied by learning how to develop a game engine from video, so framework code is almost similaer to https://github.com/TheCherno/Hazel
 
 The goal was to make the game in a short time, so the development is currently frozen and delayed
 # How to try
