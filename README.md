@@ -4,9 +4,9 @@ Broken Drifter is a small drift racing game with my own physics logic. It was ma
 
 The goal was to make the game in a short time, so the development is currently frozen and delayed
 # How to try
-You can download archive in releases.
+You can download archive in releases to play immediately.
 
-Build by yourself:
+You can build by yourself:
 1. Downloading the repository:
 
   Start by cloning the repository with git clone --recursive https://github.com/SkaLe3/BrokenDrifter_Game.
