@@ -4,7 +4,7 @@ Broken Drifter is a small drift racing game based on my physics logic. It was ma
 
 The goal was to make the game in a short time, so the development finished on the early version
 ## How to try
-You can download archive in releases to play immediately.
+You can download the archive in releases to play immediately.
 
 You can build by yourself:
 1. Downloading the repository:
@@ -17,7 +17,9 @@ You can build by yourself:
 
 ### Controls:
 
-WASD - movement. Space - handbrake. R - change camera
+* WASD: movement
+* Space: handbrake
+* R: change camera
 
 ## TODO:
 
